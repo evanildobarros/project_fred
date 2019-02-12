@@ -1,0 +1,151 @@
+{% load static %}
+<!doctype html>
+<html lang="pt_br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Projeto Fred</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+  <body>
+
+    {% include 'nav.html' %}
+    <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <img alt="" class="img" src="{% static 'img/fred.svg' %}">
+    </div>
+    </div>
+    <div class="container">
+
+      <div class="jumbotron mt-1">
+        <h1 class="jumbotron-heading text-xs-center">Ensine o Fred um pouco de Ética</h1>
+        <p class="lead text-xs-center">
+          Este aplicativo te permite conversar com o Fred.
+        </p>
+
+        <hr class="my-2">
+
+        <div class="row">
+          <div class="col-xs-6 offset-xs-3">
+            <ul class="list-group chat-log js-chat-log">
+            </ul>
+
+            <div class="input-group input-group-lg mt-1">
+              <input type="text" class="form-control js-text" placeholder="Digite algo para começar a conversa..."/>
+              <span class="input-group-btn">
+                <button class="btn btn-primary js-say">Conversar</button>
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+ <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+ </footer>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/js.cookie.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/dev-vue.js' %}"></script>
+    <script>
+      var chatterbotUrl = '{% url "chatterbot" %}';
+      var csrftoken = Cookies.get('csrftoken');
+
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+
+      var $chatlog = $('.js-chat-log');
+      var $input = $('.js-text');
+      var $sayButton = $('.js-say');
+
+      function createRow(text) {
+        var $row = $('<li class="list-group-item"></li>');
+
+        $row.text(text);
+        $chatlog.append($row);
+      }
+
+      function submitInput() {
+        var inputData = {
+          'text': $input.val()
+        }
+
+        // Display the user's input on the web page
+        createRow(inputData.text);
+
+        var $submit = $.ajax({
+          type: 'POST',
+          url: chatterbotUrl,
+          data: JSON.stringify(inputData),
+          contentType: 'application/json'
+        });
+
+        $submit.done(function(statement) {
+            createRow(statement.text);
+
+            // Clear the input field
+            $input.val('');
+
+            // Scroll to the bottom of the chat interface
+            $chatlog[0].scrollTop = $chatlog[0].scrollHeight;
+        });
+
+        $submit.fail(function() {
+          // TODO: Handle errors
+        });
+      }
+
+      $sayButton.click(function() {
+        submitInput();
+      });
+
+      $input.keydown(function(event) {
+        // Submit the input when the enter button is pressed
+        if (event.keyCode == 13) {
+          submitInput();
+        }
+      });
+    </script>
+  </body>
+</html>

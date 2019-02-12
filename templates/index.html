@@ -1,0 +1,96 @@
+{% load static %}
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Projeto Fred</title>
+
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body >
+{% include 'nav.html' %}
+
+<div class="container">
+    <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <img alt="" class="img" src="{% static 'img/fred.svg' %}">
+    </div>
+    </div>
+
+     <h1 class="jumbotron-heading text-xs-center">Ensine o Fred um pouco de Ética</h1>
+        <p class="lead text-xs-center">
+          Este aplicativo te permite conversar com o Fred.
+        </p>
+
+
+    <div id="app" class="container top-padding">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 col-sm-12">
+                <div class="card col-md-6" v-for="message in messages" v-bind:class="{ 'user-message': message.user,  'chat-message': message.chat_bot, 'offset-md-6': message.chat_bot}">
+                    <div class="card-content">
+                        [[message.text]]
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="text-box" class="row top-padding">
+            <div class="col-md-8 offset-md-2 col-sm-12">
+                <div class="row">
+                    <form class="col s12">
+                      <div class="row">
+                        <div class="input-field col s6">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea id="icon_prefix2" class="materialize-textarea" v-bind:placeholder="placeholder" v-model="input" v-bind:class="{ 'border-danger': send_blank}" v-on:change="check_content"></textarea>
+                          <label for="icon_prefix2"></label>
+                        </div>
+                          <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" v-on:click="add_message">sms</i></a>
+                      </div>
+
+                    </form>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2019 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+ </footer>
+
+
+    <script type="text/javascript" src="/static/js/dev-vue.js"></script>
+    <script type="text/javascript" src="/static/js/script.js"></script>
+
+
+</body>
+
+</html>
