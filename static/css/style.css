@@ -1,27 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Rock+Salt');
 
 /* general styles*/
+body, html {
+  height: 100%;
+  margin: 0; padding: 0;
+}
 
 html {
 font-family: 'Rock Salt', cursive;
 }
-.bold {
-  font-weight: bold;
-}
-.fred {
-  margin-bottom: 10px;
 
-}
-.img {
-  width: 302px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+svg {
+  width: 300px;
+  height: 300px;
 }
 
-.no-emoji .box { color: red; }
-.emoji .box { color: green; }
+#olhosd {
+animation-duration: 1.2s;
+animation-name: olhos;
+animation-iteration-count: infinite;
+animation-direction: alternate;
 
-.ilike-blue-container {
-    @extend .blue-text, .text-lighten-4;
-  }
+}
+
+@keyframes olhos
